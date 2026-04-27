@@ -26,7 +26,7 @@
   .live {
     position: absolute;
     top: 15px;
-    right: 15px;
+    left: 30px;
     background: linear-gradient(45deg, #b30000, #ff0000);
     color: white;
     padding: 6px 12px;
@@ -65,17 +65,25 @@
     z-index: 1000;
     max-height: 110px;
     overflow: hidden;
+    justify-content: center;
+    text-align: center;
+}
 }
   }
   
-  .logo {
-    width: 45px;
-    height: 45px;
+  .logo-top {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    width: 55px;
+    height: 55px;
     object-fit: contain;
-    border-radius: 10px;
     background: white;
     padding: 5px;
-  }
+    border-radius: 10px;
+    z-index: 1000;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+    }
   
   .info h3 {
     margin: 0;
@@ -95,13 +103,14 @@
   <body>
   
   <div id="map"></div>
+
+  <img src="logo.png" class="logo-top">
   
   <div class="live">EN VIVO</div>
   
   <div class="btn" onclick="centrar()">📍</div>
   
   <div class="panel">
-    <img src="logo.png" class="logo">
   
     <div class="info">
       <h3>SOLEMNE PROCESIÓN DE REPARACIÓN A LA SANTÍSIMA TRINIDAD</h3>
