@@ -34,11 +34,16 @@
 
   const map = L.map('map').setView([14.6349, -90.5069], 13);
 
+  const iconoProcesion = L.icon({
+  iconUrl: 'https://cdn-icons-png.flaticon.com/512/3176/3176292.png',
+  iconSize: [40, 40],
+});
+
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '&copy; OpenStreetMap'
   }).addTo(map);
 
-  let marker = L.marker([14.6349, -90.5069]).addTo(map);
+  let marker = L.marker([14.6349, -90.5069], { icon: iconoProcesion }).addTo(map);
 
   db.ref("ubicacion").on("value", (snapshot) => {
     const data = snapshot.val();
