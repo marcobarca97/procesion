@@ -12,38 +12,52 @@
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
 
   <style>
-    body { margin: 0; font-family: Arial; }
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+    }
 
     #map {
       height: 100vh;
     }
 
-    /* 🔴 EN VIVO */
+    /* 🔴 EN VIVO elegante */
     .live {
       position: absolute;
       top: 15px;
       left: 15px;
-      background: red;
+      background: linear-gradient(45deg, #b30000, #ff0000);
       color: white;
-      padding: 6px 10px;
+      padding: 6px 12px;
+      border-radius: 20px;
       font-weight: bold;
-      border-radius: 5px;
       z-index: 1000;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.3);
     }
 
-    /* 🧾 PANEL INFERIOR */
+    /* 🧾 PANEL */
     .panel {
       position: absolute;
       bottom: 0;
       width: 100%;
-      background: white;
+      background: #0d1b2a;
+      color: white;
       padding: 15px;
-      box-shadow: 0 -2px 10px rgba(0,0,0,0.2);
+      border-top-left-radius: 20px;
+      border-top-right-radius: 20px;
+      box-shadow: 0 -3px 10px rgba(0,0,0,0.4);
       z-index: 1000;
     }
 
     .panel h3 {
       margin: 0;
+      color: #ffd700;
+    }
+
+    .panel p {
+      margin: 5px 0 0;
+      font-size: 14px;
+      color: #ccc;
     }
 
     /* 🎯 BOTÓN */
@@ -51,13 +65,19 @@
       position: absolute;
       right: 15px;
       bottom: 100px;
-      background: #007bff;
-      color: white;
-      padding: 12px;
+      background: #ffd700;
+      color: #0d1b2a;
+      padding: 14px;
       border-radius: 50%;
       cursor: pointer;
       z-index: 1000;
       font-size: 18px;
+      box-shadow: 0 3px 8px rgba(0,0,0,0.4);
+      transition: 0.2s;
+    }
+
+    .btn:hover {
+      transform: scale(1.1);
     }
 
   </style>
@@ -71,8 +91,8 @@
 <div class="btn" onclick="centrar()">📍</div>
 
 <div class="panel">
-  <h3>Procesión en Vivo</h3>
-  <p>Ubicación actual de la procesión</p>
+  <h3>Procesión de mi Iglesia</h3>
+  <p>Seguimiento en tiempo real</p>
 </div>
 
 <script>
@@ -91,10 +111,10 @@ const map = L.map('map').setView([14.6349, -90.5069], 13);
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png')
 .addTo(map);
 
-/* 🙏 ICONO PERSONALIZADO */
+/* 🖼️ ICONO PERSONALIZADO */
 const icono = L.icon({
-  iconUrl: 'https://cdn-icons-png.flaticon.com/512/3176/3176292.png',
-  iconSize: [40, 40],
+  iconUrl: 'icono.png', // 👈 CAMBIA POR TU IMAGEN
+  iconSize: [45, 45],
 });
 
 let marker = L.marker([14.6349, -90.5069], { icon: icono }).addTo(map);
@@ -110,7 +130,6 @@ db.ref("ubicacion").on("value", (snapshot) => {
   }
 });
 
-/* 🎯 BOTÓN CENTRAR */
 function centrar() {
   map.setView(ultimaPosicion, 16);
 }
