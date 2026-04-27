@@ -12,88 +12,62 @@
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
 
   <style>
-    body {
-      margin: 0;
-      font-family: 'Segoe UI', sans-serif;
-    }
-
-    #map {
-      height: 100vh;
-    }
-
-    /* 🔴 EN VIVO elegante */
-    .live {
-      position: absolute;
-      top: 15px;
-      left: 15px;
-      background: linear-gradient(45deg, #b30000, #ff0000);
-      color: white;
-      padding: 6px 12px;
-      border-radius: 20px;
-      font-weight: bold;
-      z-index: 1000;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.3);
-    }
-
-    /* 🧾 PANEL */
-    .panel {
-      position: absolute;
-      bottom: 0;
-      width: 100%;
-      background: #0d1b2a;
-      color: white;
-      padding: 15px;
-      border-top-left-radius: 20px;
-      border-top-right-radius: 20px;
-      box-shadow: 0 -3px 10px rgba(0,0,0,0.4);
-      z-index: 1000;
-    }
-
-    .panel h3 {
-      margin: 0;
-      color: #ffd700;
-    }
-
-    .panel p {
-      margin: 5px 0 0;
-      font-size: 14px;
-      color: #ccc;
-    }
-
-    /* 🎯 BOTÓN */
-    .btn {
-      position: absolute;
-      right: 15px;
-      bottom: 100px;
-      background: #ffd700;
-      color: #0d1b2a;
-      padding: 14px;
-      border-radius: 50%;
-      cursor: pointer;
-      z-index: 1000;
-      font-size: 18px;
-      box-shadow: 0 3px 8px rgba(0,0,0,0.4);
-      transition: 0.2s;
-    }
-
-    .btn:hover {
-      transform: scale(1.1);
-    }
-
-  </style>
-</head>
-<body>
-
-<div id="map"></div>
-
-<div class="live">EN VIVO</div>
-
-<div class="btn" onclick="centrar()">📍</div>
-
-<div class="panel">
-  <h3>Procesión de mi Iglesia</h3>
-  <p>Seguimiento en tiempo real</p>
-</div>
+  .panel {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    background: #0d1b2a;
+    color: white;
+    padding: 12px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+    box-shadow: 0 -3px 10px rgba(0,0,0,0.4);
+    z-index: 1000;
+  }
+  
+  .logo {
+    width: 50px;
+    height: 50px;
+    object-fit: contain;
+    border-radius: 10px;
+    background: white;
+    padding: 5px;
+  }
+  
+  .info h3 {
+    margin: 0;
+    font-size: 16px;
+    color: #ffd700;
+  }
+  
+  .info p {
+    margin: 2px 0 0;
+    font-size: 13px;
+    color: #ccc;
+  }
+  
+    </style>
+  </head>
+  <body>
+  
+  <div id="map"></div>
+  
+  <div class="live">EN VIVO</div>
+  
+  <div class="btn" onclick="centrar()">📍</div>
+  
+  <div class="panel">
+    <img src="logo.png" class="logo">
+  
+    <div class="info">
+      <h3>SOLEMNE PROCESIÓN DE REPARACIÓN A LA SANTÍSIMA TRINIDAD</h3>
+      <h2>Asociación de Festejos Guadalupanos, Sector "El Bosque" El Gallito z.3</h2>
+      <p>VIERNES 22 DE MAYO DEL 2026</p>
+    </div>
+  </div>
 
 <script>
 const firebaseConfig = {
