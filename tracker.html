@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Tracker</title>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js"></script>
+</head>
+<body>
+
+<h2>Enviando ubicación...</h2>
+
+<script>
+const firebaseConfig = {
+  apiKey: "AQUI_TU_API_KEY",
+  authDomain: "AQUI_TU_AUTH",
+  databaseURL: "AQUI_TU_DATABASE_URL",
+  projectId: "AQUI_TU_PROJECT_ID",
+};
+
+firebase.initializeApp(firebaseConfig);
+const db = firebase.database();
+
+navigator.geolocation.watchPosition((position) => {
+  db.ref("ubicacion").set({
+    lat: position.coords.latitude,
+    lng: position.coords.longitude
+  });
+});
+</script>
+
+</body>
+</html>
