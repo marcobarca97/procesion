@@ -153,6 +153,26 @@ const map = L.map('map').setView([14.6349, -90.5069], 13);
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png')
 .addTo(map);
 
+
+// 🛣️ RECORRIDO DE LA PROCESIÓN
+const ruta = [
+  [14.6349, -90.5069],
+  [14.6355, -90.5075],
+  [14.6360, -90.5080],
+  [14.6365, -90.5090]
+];
+
+// Dibujar línea
+L.polyline(ruta, {
+  color: '#33CCFF',
+  weight: 5,
+  opacity: 0.8
+}).addTo(map);
+
+// Ajustar mapa a la ruta (opcional pero recomendado)
+map.fitBounds(ruta);
+  
+
 /* 🖼️ ICONO PERSONALIZADO */
 const icono = L.icon({
   iconUrl: 'icono.png', // 👈 CAMBIA POR TU IMAGEN
