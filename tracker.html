@@ -66,6 +66,9 @@ map.on('click', function(e) {
   // Guardar punto
   recorrido.push(punto);
 
+  // Guardar recorrido completo en Firebase
+  db.ref("recorrido").set(recorrido);
+
   // Mover marcador
   if (marker) {
     marker.setLatLng(punto);
