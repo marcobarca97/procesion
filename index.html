@@ -253,6 +253,29 @@ let marker = L.marker([14.6349, -90.5069], { icon: icono }).addTo(map);
 
 let ultimaPosicion = [14.6349, -90.5069];
 
+let lineaRecorrida;
+
+// Escuchar recorrido en tiempo real
+db.ref("recorrido").on("value", (snapshot) => {
+  const data = snapshot.val();
+
+  if (data) {
+
+    // borrar línea anterior
+    if (lineaRecorrida) {
+      map.removeLayer(lineaRecorrida);
+    }
+
+    // dibujar nueva
+    lineaRecorrida = L.polyline(data, {
+      color: '#111',
+      weight: 7,
+      opacity: 0.9
+    }).addTo(map);
+
+  }
+});
+
 db.ref("ubicacion").on("value", (snapshot) => {
   const data = snapshot.val();
   if (data) {
