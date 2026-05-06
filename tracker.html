@@ -26,6 +26,25 @@
       border-radius: 10px;
       z-index: 1000;
     }
+
+    .btn-deshacer {
+      position: absolute;
+      top: 60px; /* debajo del título */
+      left: 10px;
+      background: #111;
+      color: white;
+      border: none;
+      padding: 8px 12px;
+      border-radius: 10px;
+      cursor: pointer;
+      z-index: 1000;
+    }
+
+
+    .btn-deshacer:hover {
+      background: #333;
+    }
+        
   </style>
 </head>
 
@@ -33,6 +52,13 @@
 
 <div class="titulo">Toca el mapa para enviar ubicación 📍</div>
 <div id="map"></div>
+
+<div class="titulo">Toca el mapa para enviar ubicación 📍</div>
+
+<button class="btn-deshacer" onclick="deshacer()">↩️ Deshacer</button>
+
+<div id="map"></div>
+  
 
 <script>
 const firebaseConfig = {
@@ -93,6 +119,34 @@ map.on('click', function(e) {
     lng: lng
   });
 
+  
+  function deshacer() {
+
+  if (recorrido.length > 0) {
+    recorrido.pop();
+
+    db.ref("recorrido").set(recorrido);
+
+    if (lineaRecorrida) {
+      map.removeLayer(lineaRecorrida);
+    }
+
+    lineaRecorrida = L.polyline(recorrido, {
+      color: 'black',
+      weight: 6,
+      opacity: 0.9
+    }).addTo(map);
+
+    if (recorrido.length > 0) {
+      marker.setLatLng(recorrido[recorrido.length - 1]);
+    }
+
+  } else {
+    alert("No hay puntos para borrar");
+  }
+}
+
+  
   alert("Ubicación enviada 📍");
 });
 </script>
