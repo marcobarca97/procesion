@@ -27,9 +27,8 @@
       z-index: 1000;
     }
 
-    .btn-deshacer {
+    .btn {
       position: absolute;
-      top: 60px; /* debajo del título */
       left: 10px;
       background: #111;
       color: white;
@@ -40,25 +39,25 @@
       z-index: 1000;
     }
 
-
-    .btn-deshacer:hover {
+    .btn:hover {
       background: #333;
     }
-        
+
+    .deshacer { top: 60px; }
+    .iniciar { top: 100px; background: green; }
+    .finalizar { top: 140px; background: red; }
   </style>
 </head>
 
 <body>
 
 <div class="titulo">Toca el mapa para enviar ubicación 📍</div>
+
+<button class="btn deshacer" onclick="deshacer()">↩️ Deshacer</button>
+<button class="btn iniciar" onclick="iniciar()">▶️ Iniciar</button>
+<button class="btn finalizar" onclick="finalizar()">⛔ Finalizar</button>
+
 <div id="map"></div>
-
-<div class="titulo">Toca el mapa para enviar ubicación 📍</div>
-
-<button class="btn-deshacer" onclick="deshacer()">↩️ Deshacer</button>
-
-<div id="map"></div>
-  
 
 <script>
 const firebaseConfig = {
@@ -82,17 +81,17 @@ let marker;
 let recorrido = [];
 let lineaRecorrida;
 
-// Click en mapa
+// CLICK EN MAPA
 map.on('click', function(e) {
+
   const lat = e.latlng.lat;
   const lng = e.latlng.lng;
-
   const punto = [lat, lng];
 
   // Guardar punto
   recorrido.push(punto);
 
-  // Guardar recorrido en Firebase
+  // Guardar en Firebase
   db.ref("recorrido").set(recorrido);
 
   // Marcador
@@ -114,15 +113,15 @@ map.on('click', function(e) {
   }).addTo(map);
 
   // Ubicación actual
-  db.ref("ubicacion").set({
-    lat: lat,
-    lng: lng
-  });
+  db.ref("ubicacion").set({ lat, lng });
 
-  
-  function deshacer() {
+});
+
+// 🔁 DESHACER
+function deshacer() {
 
   if (recorrido.length > 0) {
+
     recorrido.pop();
 
     db.ref("recorrido").set(recorrido);
@@ -146,9 +145,18 @@ map.on('click', function(e) {
   }
 }
 
-  
-  alert("Ubicación enviada 📍");
-});
+// ▶️ INICIAR
+function iniciar() {
+  db.ref("estado").set("activo");
+  alert("Procesión iniciada");
+}
+
+// ⛔ FINALIZAR
+function finalizar() {
+  db.ref("estado").set("inactivo");
+  alert("Procesión finalizada");
+}
+
 </script>
 
 </body>
