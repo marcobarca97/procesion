@@ -53,11 +53,43 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png')
 
 // Marcador
 let marker;
+let recorrido = [];
+let lineaRecorrida;
 
 // Click en mapa
 map.on('click', function(e) {
   const lat = e.latlng.lat;
   const lng = e.latlng.lng;
+
+  const punto = [lat, lng];
+
+  // Guardar punto
+  recorrido.push(punto);
+
+  // Mover marcador
+  if (marker) {
+    marker.setLatLng(punto);
+  } else {
+    marker = L.marker(punto).addTo(map);
+  }
+
+  // Dibujar recorrido negro
+  if (lineaRecorrida) {
+    map.removeLayer(lineaRecorrida);
+  }
+
+  lineaRecorrida = L.polyline(recorrido, {
+    color: 'black',
+    weight: 6,
+    opacity: 0.9
+  }).addTo(map);
+
+  // Enviar ubicación actual
+  db.ref("ubicacion").set({
+    lat: lat,
+    lng: lng
+  });
+});
 
   // Mover marcador
   if (marker) {
