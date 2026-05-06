@@ -255,6 +255,21 @@ let ultimaPosicion = [14.6349, -90.5069];
 
 let lineaRecorrida;
 
+db.ref("estado").on("value", (snapshot) => {
+  const estado = snapshot.val();
+
+  if (estado === "activo") {
+    // mostrar (no hacemos nada porque los listeners ya lo dibujan)
+  } else {
+
+    if (marker) map.removeLayer(marker);
+
+    if (lineaRecorrida) {
+      map.removeLayer(lineaRecorrida);
+    }
+  }
+});
+
 // Escuchar recorrido en tiempo real
 db.ref("recorrido").on("value", (snapshot) => {
   const data = snapshot.val();
