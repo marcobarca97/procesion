@@ -21,7 +21,25 @@
   #map {
     height: 100vh;
   }
-  
+
+  .mensaje {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    
+    background: rgba(13, 27, 42, 0.9);
+    color: white;
+    padding: 20px 30px;
+    border-radius: 15px;
+    
+    font-size: 18px;
+    text-align: center;
+    
+    z-index: 2000;
+    display: none;
+  }
+    
   .live {
     position: absolute;
     top: 15px;
@@ -121,6 +139,10 @@
   <body>
   
   <div id="map"></div>
+
+  <div id="mensajeEstado" class="mensaje">
+  La procesión no ha iniciado
+  </div>
 
   <img src="logo.png" class="logo-top">
   
@@ -232,7 +254,7 @@ const ruta = [
 ];
 
 // Dibujar línea
-L.polyline(ruta, {
+let lineaRuta = L.polyline(ruta, {
   color: '#33CCFF',
   weight: 5,
   opacity: 0.8
@@ -250,28 +272,49 @@ const icono = L.icon({
 });
 
 let marker = L.marker([14.6349, -90.5069], { icon: icono }).addTo(map);
-
 let ultimaPosicion = [14.6349, -90.5069];
-
 let lineaRecorrida;
+let activo = false;
+let estadoActual = "inactivo";
+const mensaje = document.getElementById("mensajeEstado");
 
 db.ref("estado").on("value", (snapshot) => {
   const estado = snapshot.val();
 
+  estadoActual = estado;
+  activo = (estado === "activo");
+
   if (estado === "activo") {
-    // mostrar (no hacemos nada porque los listeners ya lo dibujan)
-  } else {
-
-    if (marker) map.removeLayer(marker);
-
-    if (lineaRecorrida) {
-      map.removeLayer(lineaRecorrida);
+    mensaje.style.display = "none";
+  
+    // volver a mostrar ruta si no existe
+    if (!map.hasLayer(lineaRuta)) {
+      lineaRuta.addTo(map);
     }
   }
-});
 
+  if (estado === "inactivo") {
+    mensaje.style.display = "block";
+    mensaje.innerHTML = "🟡 La procesión no ha iniciado";
+  }
+
+  if (estado === "finalizado") {
+    mensaje.style.display = "block";
+    mensaje.innerHTML = "🔴 La procesión ha finalizado";
+  }
+
+  // ocultar mapa si no está activo
+  if (!activo) {
+    if (marker) map.removeLayer(marker);
+    if (lineaRecorrida) map.removeLayer(lineaRecorrida);
+    if (lineaRuta) map.removeLayer(lineaRuta);
+  }
+});
 // Escuchar recorrido en tiempo real
 db.ref("recorrido").on("value", (snapshot) => {
+
+  if (!activo) return;
+  
   const data = snapshot.val();
 
   if (data) {
@@ -292,6 +335,9 @@ db.ref("recorrido").on("value", (snapshot) => {
 });
 
 db.ref("ubicacion").on("value", (snapshot) => {
+
+  if (!activo) return;
+  
   const data = snapshot.val();
   if (data) {
     ultimaPosicion = [data.lat, data.lng];
