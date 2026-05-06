@@ -51,7 +51,7 @@ const map = L.map('map').setView([14.6349, -90.5069], 16);
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png')
 .addTo(map);
 
-// Marcador
+// Variables
 let marker;
 let recorrido = [];
 let lineaRecorrida;
@@ -66,17 +66,17 @@ map.on('click', function(e) {
   // Guardar punto
   recorrido.push(punto);
 
-  // Guardar recorrido completo en Firebase
+  // Guardar recorrido en Firebase
   db.ref("recorrido").set(recorrido);
 
-  // Mover marcador
+  // Marcador
   if (marker) {
     marker.setLatLng(punto);
   } else {
     marker = L.marker(punto).addTo(map);
   }
 
-  // Dibujar recorrido negro
+  // Dibujar recorrido
   if (lineaRecorrida) {
     map.removeLayer(lineaRecorrida);
   }
@@ -87,21 +87,7 @@ map.on('click', function(e) {
     opacity: 0.9
   }).addTo(map);
 
-  // Enviar ubicación actual
-  db.ref("ubicacion").set({
-    lat: lat,
-    lng: lng
-  });
-});
-
-  // Mover marcador
-  if (marker) {
-    marker.setLatLng([lat, lng]);
-  } else {
-    marker = L.marker([lat, lng]).addTo(map);
-  }
-
-  // Enviar a Firebase
+  // Ubicación actual
   db.ref("ubicacion").set({
     lat: lat,
     lng: lng
