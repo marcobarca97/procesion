@@ -303,7 +303,7 @@ const icono = L.icon({
   iconSize: [45, 45],
 });
 
-let marker = L.marker([14.6349, -90.5069], { icon: icono }).addTo(map);
+let marker = null;
 let ultimaPosicion = [14.6349, -90.5069];
 let lineaRecorrida;
 let activo = false;
@@ -335,36 +335,15 @@ db.ref("estado").on("value", (snapshot) => {
     mensaje.innerHTML = "🔴 La procesión ha finalizado";
   }
 
-  // ocultar mapa si no está activo
+
+  // ocultar solo marcador y recorrido (NO la ruta)
   if (!activo) {
-    if (marker) map.removeLayer(marker);
-    if (lineaRecorrida) map.removeLayer(lineaRecorrida);
-    if (lineaRuta) map.removeLayer(lineaRuta);
-  }
-});
-// Escuchar recorrido en tiempo real
-db.ref("recorrido").on("value", (snapshot) => {
-
-  if (!activo) return;
-  
-  const data = snapshot.val();
-
-  if (data) {
-
-    // borrar línea anterior
-    if (lineaRecorrida) {
-      map.removeLayer(lineaRecorrida);
+    if (marker) {
+      map.removeLayer(marker);
+      marker = null;
     }
-
-    // dibujar nueva
-    lineaRecorrida = L.polyline(data, {
-      color: '#111',
-      weight: 7,
-      opacity: 0.9
-    }).addTo(map);
-
   }
-});
+
 
 db.ref("ubicacion").on("value", (snapshot) => {
 
@@ -373,7 +352,11 @@ db.ref("ubicacion").on("value", (snapshot) => {
   const data = snapshot.val();
   if (data) {
     ultimaPosicion = [data.lat, data.lng];
-    marker.setLatLng(ultimaPosicion);
+    if (marker) {
+  marker.setLatLng(ultimaPosicion);
+} else {
+  marker = L.marker(ultimaPosicion, { icon: icono }).addTo(map);
+}
     map.panTo(ultimaPosicion);
   }
 });
