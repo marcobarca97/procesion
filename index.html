@@ -288,7 +288,7 @@ const ruta = [
 // Dibujar línea
 let lineaRuta = L.polyline(ruta, {
   color: '#33CCFF',
-  weight: 3,
+  weight: 5,
   opacity: 0.8
 }).addTo(map);
 
@@ -299,7 +299,7 @@ map.fitBounds(ruta);
 
 /* 🖼️ ICONO PERSONALIZADO */
 const icono = L.icon({
-  iconUrl: 'icono.png', // 👈 CAMBIA POR TU IMAGEN
+  iconUrl: 'logo_trini.png', // 👈 CAMBIA POR TU IMAGEN
   iconSize: [45, 45],
 });
 
